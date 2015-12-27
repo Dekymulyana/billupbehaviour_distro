@@ -1,0 +1,512 @@
+
+<?php
+	include "koneksi.php";
+	session_start();
+	
+	$sql = "SELECT * FROM produk ORDER BY RAND() limit 4"; 
+    $result = mysql_query($sql);
+	
+	$sql2 = "SELECT * FROM  ORDER BY id_produk ASC LIMIT 4"; 
+    $result = mysql_query($sql);
+	
+?>
+
+
+
+<html> 
+  <head>
+  <title> BERANDA </title>
+  <link href='IMG/icon.ico' rel='shortcut icon'>
+  <link rel="stylesheet" type="text/css" href="index.css" />
+  </head>
+  
+<body>
+<div class="badan" >
+	<div class="header"> 
+		<div><img src="IMG/logo_home.png" class="logo">
+
+		<div style="width: 0px;height: 30px; float:right;margin-top:100; margin-right:20;">
+						<?php	
+    
+						if (!empty($_SESSION['id_user'])){
+							?> <a href="logout.php" class="popup-link"><img style="float:right;z-index:5000;" src="img/logout.png" width="50" height="50"></a>
+							
+						
+						<?php	
+						}else{ ?>
+								<a href="#popup" ><img style="float:right;z-index:5000;" src="img/login.png" width="50" height="50"></a>
+						<?php 
+						}
+						?>
+								<div class="popup-wrapper" id="popup">
+									<div class="popup-container">
+									<form action="cek_login.php" method="post" class="popup-form">
+									<h3 width="400px" align="center" style="border-RIGHT: 1px solid #FFF; border-LEFT: 1px solid #FFF;"> <img src="IMG/CONNECT.png"</h3>
+									<div class="input-group">
+									<p><input type="text" name="username" placeholder="Username"></p>
+									<p>
+									<input type="password" name="password" placeholder="Password">
+									<input type="submit" value="Login">
+									</p>
+									<br />
+									<a href="buat_akun.php"><h5 style=" align=center; color:white; text-decoration=none;">Tidak Terdaftar ? Daftar Sekarang</h5>
+									</a>
+									</div>
+									<a class="popup-close" href="#closed">x</a>
+									
+									</div>
+									</div>
+		</div>
+		<?php	
+    
+	if (!empty($_SESSION['id_user'])){
+		?> <div style=" float:right; color:white; text-decoration=none; margin-top:120; font-weight: bold; margin-right:60;">Selamat Datang <?php
+		$nama=$_SESSION['id_user'];
+		echo($nama);
+		?></div>
+	
+	
+	<?php	
+	}
+	
+	else{ ?>
+		<div style=" float:right; color:white; text-decoration=none; margin-top:120; font-weight: bold; margin-right:60;">Anda Belum Login </div>
+	<?php 
+	}
+	?>
+		</div>
+		
+		
+		
+	<div class="line">
+	
+	<?php	
+    
+	if (!empty($_SESSION['id_user'])){
+		?> <table align="left" class="menu2">
+			<tr>
+			<ul id="menu">
+	
+			<li><a href="#" class="drop">HOME</a>
+		
+			</li>
+			</tr>
+			</table>
+			<table align="left" class="menu2">
+		<tr>
+		<ul id="menu">
+	
+		<li><a href="#" class="drop">KATALOG</a>
+		<div class="dropdown_3columns">
+		<div class="col_3">
+		
+		<h2>PILIH KATALOG</h2></div>
+		
+		<div class="col_1">
+			<h3>WOMEN</h3>
+			<ul>
+			<li><a href="pick1.php">KAOS</a></li>
+			<li><a href="#">SWETER</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+
+		<div class="col_1">
+			<h3>MEN</h3>
+			<ul>
+			<li><a href="#">KAOS</a></li>
+			<li><a href="#">KEMEJA</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+
+		<div class="col_1">
+			<h3>KIDS</h3>
+			<ul>
+			<li><a href="#">KAOS</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+		</div>
+		</li>
+		</tr>
+		</table>
+			
+			<table align="left" class="menu2">
+	<tr>
+		<ul id="menu">
+	
+	<li><a href="#" class="drop">KERANJANG</a>
+		<div class="dropdown_2columns">
+		<div class="col_3">
+		
+		<h2>KERANJANG ANDA</h2></div>
+		
+		<div class="col_1">
+			<ul>
+			<p<?php 
+										$sid = session_id();
+										include "koneksi.php";
+										$sql = mysql_query("SELECT * FROM keranjang, produk WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");	
+										$total =0;	  
+										while($d=mysql_fetch_array($sql)){
+												
+												$subtotal    = $d['harga']* $d['jumlah'];
+												$total       = $total + $subtotal;
+										}
+										echo"
+										<h2>Total Belanja : <b>$total</b></h2>
+										<ul>
+										<li><a href=#closed'>Tambah Barang</a></li>
+										<li><a href='selesai.php'>Selesai belanja</a></li>
+										</ul>";
+										?></p>
+			
+			<li><a href="index.php#popup2">LIHAT KERANJANG </a></li>
+			
+			</ul>
+		</div>
+
+		
+
+		
+	</div>
+	</li>
+	</tr>
+	</table>
+			
+			<table align="left" class="menu2">
+			<tr>
+				<ul id="menu">
+			
+			<li><a href="caraorder.php" class="drop">CARA ORDER</a>
+				
+			</li>
+			</tr>
+			</table>	
+			
+			<table align="left" class="menu2">
+				<tr>
+					<ul id="menu">
+				
+				<li><a href="#" class="drop">TENTANG KAMI</a>
+					
+				</li>
+				</tr>
+		</table>
+		
+		
+   	<a href="#popup2"><img src="img/cart_black.png" class="cart"></a>
+			<div class="popup2-wrapper" id="popup2">
+									<div class="popup2-container">
+									<form action="cek_login.php" method="post" class="popup2-form">
+									<div class="input-group">
+									<?php 
+										$sid = session_id();
+										include "koneksi.php";
+										echo"<h1>Keranjang Belanja</h1>
+												  <table border=1 style='color:white;'>
+												  <tr>
+														<th>Nama Produk</th>
+														<th>Qty</th>
+														<th>Harga</th>
+														<th>Sub Total</th>
+												  </tr>
+												  ";	
+										$sql = mysql_query("SELECT * FROM keranjang, produk WHERE id_session='$sid' AND keranjang.id_produk=produk.id_produk");	
+										$total =0;	  
+										while($d=mysql_fetch_array($sql)){
+												
+												$subtotal    = $d['harga']* $d['jumlah'];
+												$total       = $total + $subtotal;
+												echo"
+													<tr><td>$d[nama_produk]</td>
+													<td>$d[jumlah]</td>
+													<td>$d[harga]</td>
+													<td>$subtotal</td></tr>";
+										}
+										echo"</table>
+										<h2>Total Belanja : <b>$total</b></h2>
+										<ul>
+										<li><a href=#closed'>Tambah Barang</a></li>
+										<li><a href='selesai.php'>Selesai belanja</a></li>
+										</ul>";
+										?>
+									</div>
+									
+									<a class="popup2-close" href="#closed">x</a>
+									
+									</div>
+			</div>
+	<?php	
+	}
+	
+	else{ ?>
+		<table align="left" class="menu2">
+			<tr>
+			<ul id="menu">
+	
+			<li><a href="#" class="drop">HOME</a>
+		
+			</li>
+			</tr>
+			</table>
+			
+			
+		<table align="left" class="menu2">
+		<tr>
+		<ul id="menu">
+	
+		<li><a href="#" class="drop">KATALOG</a>
+		<div class="dropdown_3columns">
+		<div class="col_3">
+		
+		<h2>PILIH KATALOG</h2></div>
+		
+		<div class="col_1">
+			<h3>WOMEN</h3>
+			<ul>
+			<li><a href="pick1.php">KAOS</a></li>
+			<li><a href="#">SWETER</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+
+		<div class="col_1">
+			<h3>MEN</h3>
+			<ul>
+			<li><a href="#">KAOS</a></li>
+			<li><a href="#">KEMEJA</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+
+		<div class="col_1">
+			<h3>KIDS</h3>
+			<ul>
+			<li><a href="#">KAOS</a></li>
+			<li><a href="#">CELANA</a></li>
+			</ul>
+		</div>
+		</div>
+		</li>
+		</tr>
+		
+		<table align="left" class="menu2">
+			<tr>
+				<ul id="menu">
+			
+			<li><a href="caraorder.php" class="drop">CARA ORDER</a>
+				
+			</li>
+			</tr>
+			</table>	
+		
+		<table align="left" class="menu2">
+				<tr>
+					<ul id="menu">
+				
+				<li><a href="#" class="drop">TENTANG KAMI</a>
+					
+				</li>
+				</tr>
+		</table>
+	
+	<?php 
+	}
+	?>
+	
+	
+			
+	
+   </div> 
+       
+
+	   
+		<div class="line2"> </div> 
+		
+	</div>
+       </div>	
+	
+<div class="badan">		
+	<div class="contener_slideshow">
+			<div class="contener_slide">
+					<div class="slid_1"><img src="IMG/iklan_home.jpg"></div>
+					<div class="slid_2"><img src="img/iklan_home2.jpg"></div>
+					<div class="slid_3"><img src="img/iklan_home3.jpg"></div>
+			</div>
+	</div>
+</div>
+   
+   <div class="badan">
+   
+		<div class="promosi">
+		<br>
+		<table>
+		<tr><td> <img src="IMG/new_arrival.png"></td></tr>
+		</table>
+		<br>
+		<br>
+	    <br>
+		
+	<table border="0">
+		
+		<tr>
+		
+		<?php
+		while($row = mysql_fetch_array($result)) {
+		?>
+		<td><img src="imageView.php?id_produk= <?php echo $row["id_produk"];?>" width=180px; /></td>
+		<td>
+		<?php echo $row["nama_produk"];?> <br><?php echo $row["harga"];?> 
+		
+		<form action=aksi_keranjang.php>
+		<input type="hidden" name=id value="<?php echo $row["id_produk"];?>"><br><br> 
+		</form>
+		<a href='aksi_keranjang.php?id=<?php echo $row["id_produk"];?>'>
+		<?php	
+    
+		if (!empty($_SESSION['id_user'])){
+		?><input type="SUBMIT" VALUE=BELI></a> <?php
+		?></div>
+	
+		<?php	
+		}
+	
+		else{ ?>
+			
+		<?php 
+		}
+		?>
+		
+		
+		</td>
+		<?php		
+		}
+		?>
+		</tr>
+		
+		
+	</table>
+		
+		</div> 
+		
+		
+    </div>
+   
+    <div class="badan">
+		<div class="media">
+				<br>
+				<table>
+				<tr><td> <img src="IMG/new_INFO.png"></td></tr>
+				</table>
+				<br>
+				<br>
+				<br>
+				<table border="0">
+				<tr>
+				<td ><img src="IMG/FEST1.GIF"  width="300px" height="150px"></td>
+				<td width="60px"></td>
+				<td><img src="IMG/fest4.png"  width="300px" height="150px"></td>
+				<td width="60px"></td>
+				<tr height="20px">
+				</tr>
+				</tr>
+				<tr>
+				<td ><img src="IMG/FEST2.jpg"  width="300px" height="150px"></td>
+				<td width="60px"></td>
+			   <td><img src="IMG/fest3.jpg"  width="300px" height="150px"></td>
+				<td width="60px"></td>
+				
+				</tr>
+				</table>
+		</div>
+    </div>
+	
+   
+	
+	
+  <div class="badan">
+  <div class="footer">
+		<br>
+	<table border="0">
+	<tr >
+		<td width="400px" align="center" style="border-RIGHT: 1px solid #FFF; border-LEFT: 1px solid #FFF;" ><img src="IMG/CONNECT.png" >
+		
+		
+		
+		<img onMouseOver="this.src='IMG/fb_hover.png'" src="IMG/fb.png" onMouseOut="this.src='IMG/fb.png'" class="logo_sosmed"> 
+		<img onMouseOver="this.src='IMG/twit_hover.png'" src="IMG/twit.png" onMouseOut="this.src='IMG/twit.png'" class="logo_sosmed">
+		<img onMouseOver="this.src='IMG/ig_hover.png'" src="IMG/ig.png" onMouseOut="this.src='IMG/ig.png'" class="logo_sosmed" >
+		
+		<img src="IMG/COPYRIGHT.png" class="copy">
+		
+
+		
+		</td>
+		<td width="15px"> </td>
+		<td width="400px" align="center" style="border-RIGHT: 1px solid #FFF;"><img src="IMG/COMPANY.png" >
+			<table border="0" class="tabeltengah">
+				<tr>
+					<td  align="left"><img src="IMG/about.png">
+					<img src="IMG/abous.png"></td> 	
+				</tr>
+			    <tr>
+				    <td  align="left"><img src="IMG/phone.png">
+					<img src="IMG/callus.png"></td> 
+				
+				</tr>
+				
+			    <tr>
+					<td  align="left">
+					<img src="IMG/career.png">
+					<img src="IMG/carrus.png"></td>
+				
+				</tr>
+				<tr></tr>
+				<tr></tr>
+				<tr>
+				
+					<td  align="left">
+					<img src="IMG/cart.png">
+					<img src="IMG/retail.png"></td>
+				
+				</tr>
+				<tr>
+				
+					<td  align="left">
+					<img src="IMG/questions.png">
+					<img src="IMG/questions2.png"></td>
+				
+				</tr>
+			</table>
+		
+		</td>
+		<td width="15px"></td>
+		
+		<td width="400px" align="center" style="border-RIGHT: 1px solid #FFF;"><img src="IMG/STORE.png" class="logoatas" >
+			<table class="tabelkanan" >
+				<tr>
+				
+					<td  align="left">
+					<img src="IMG/toko1.png">
+					<img src="IMG/toko2.png">
+				    <img src="IMG/toko3.png">
+			
+				</tr>
+			</table>
+		
+		</td>
+		</tr>
+		
+		
+		</table
+  </div>
+</div>
+		
+  
+ 
+</body>
+  
+ </html>
+ 
